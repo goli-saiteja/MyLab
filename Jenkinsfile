@@ -4,10 +4,11 @@ pipeline {
     tools {
         maven 'maven'
     }
-    environment {
-        ArtifactId = readMavenPom().getArtifactId()
-        Version = readMavenPom.getVersion()
-        Name = readMavenPom.getName()
+    environment{
+       ArtifactId = readMavenPom().getArtifactId()
+       Version = readMavenPom().getVersion()
+       Name = readMavenPom().getName()
+       GroupId = readMavenPom().getGroupId()
     }
 
     stages {
@@ -36,13 +37,16 @@ pipeline {
 
         // Stage4: Print environment variables
 
-        stage('Print Environment Variables') {
+         // Stage 4 : Print some information
+        stage ('Print Environment variables'){
             steps {
-                echo "Artifact Id is ${ArtifactId}"
-                echo "Version is ${Version}"
-                echo "Name is ${Name}"
+                echo "Artifact ID is '${ArtifactId}'"
+                echo "Version is '${Version}'"
+                echo "GroupID is '${GroupId}'"
+                echo "Name is '${Name}'"
             }
         }
+
 
         // Stage5 : Publish the source code to Sonarqube
         stage('Deploy') {
