@@ -21,6 +21,13 @@ pipeline {
                 echo ' testing......'
             }
         }
+        //stage3: Publish the artifact to Nexus
+
+        stage('Publish to Nexus') {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'VinayDevOpsLab', classifier: '', file: 'target/VinayDevOpsLab-0.0.12.war', type: 'war']], credentialsId: 'a6755651-3ee4-4457-b47e-ac936661615f', groupId: 'com.vinaysdevopslab', nexusUrl: '172.20.10.175:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'saidevopslab-SNAPSHOT', version: '0.0.12'
+            }
+        }
 
         // Stage3 : Publish the source code to Sonarqube
         stage('Deploy') {
