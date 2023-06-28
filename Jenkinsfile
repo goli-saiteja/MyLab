@@ -4,11 +4,11 @@ pipeline {
     tools {
         maven 'maven'
     }
-    environment{
-       ArtifactId = readMavenPom().getArtifactId()
-       Version = readMavenPom().getVersion()
-       Name = readMavenPom().getName()
-       GroupId = readMavenPom().getGroupId()
+    environment {
+        ArtifactId = readMavenPom().getArtifactId()
+        Version = readMavenPom().getVersion()
+        Name = readMavenPom().getName()
+        GroupId = readMavenPom().getGroupId()
     }
 
     stages {
@@ -31,14 +31,14 @@ pipeline {
 
         stage('Publish to Nexus') {
             steps {
-                nexusArtifactUploader artifacts: [[artifactId: 'VinayDevOpsLab', classifier: '', file: 'target/VinayDevOpsLab-0.0.14-SNAPSHOT.war', type: 'war']], credentialsId: 'a6755651-3ee4-4457-b47e-ac936661615f', groupId: 'com.vinaysdevopslab', nexusUrl: '172.20.10.175:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'saidevopslab-SNAPSHOT', version: '0.0.14-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: '${ArtifactId}', classifier: '', file: 'target/VinayDevOpsLab-0.0.14-SNAPSHOT.war', type: 'war']], credentialsId: 'a6755651-3ee4-4457-b47e-ac936661615f', groupId: '${GroupId}', nexusUrl: '172.20.10.175:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'saidevopslab-SNAPSHOT', version: '${Version}'
             }
         }
 
         // Stage4: Print environment variables
 
-         // Stage 4 : Print some information
-        stage ('Print Environment variables'){
+        // Stage 4 : Print some information
+        stage('Print Environment variables') {
             steps {
                 echo "Artifact ID is '${ArtifactId}'"
                 echo "Version is '${Version}'"
@@ -47,13 +47,11 @@ pipeline {
             }
         }
 
-
         // Stage5 : Publish the source code to Sonarqube
         stage('Deploy') {
             steps {
                 echo ' Deploying'
             }
         }
-
     }
 }
