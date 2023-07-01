@@ -33,8 +33,21 @@ pipeline {
             steps {
                 script {
                     def NexusRepo = Version.endsWith("SNAPSHOT") ? "saidevopslab-SNAPSHOT" : "saidevopslab-RELEASE"
-
-                    nexusArtifactUploader artifacts: [[artifactId: "${ArtifactId}", classifier: '', file: 'target/VinayDevOpsLab-0.0.14-SNAPSHOT.war', type: 'war']], credentialsId: 'a6755651-3ee4-4457-b47e-ac936661615f', groupId: "${GroupId}", nexusUrl: '172.20.10.175:8081', nexusVersion: 'nexus3', protocol: 'http', repository: "${NexusRepo}", version: "${Version}"
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: "${ArtifactId}", 
+                            classifier: '', 
+                            file: "target/${ArtifactId}-${Version}.war", 
+                            type: 'war'
+                        ]
+                    ], 
+                    credentialsId: 'a6755651-3ee4-4457-b47e-ac936661615f', 
+                    groupId: "${GroupId}", 
+                    nexusUrl: '172.20.10.175:8081', 
+                    nexusVersion: 'nexus3', 
+                    protocol: 'http', 
+                    repository: "${NexusRepo}", 
+                    version: "${Version}"
                 }
             }
         }
